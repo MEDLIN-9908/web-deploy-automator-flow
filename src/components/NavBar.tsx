@@ -1,22 +1,24 @@
 
 import { Home, Activity, Box, Server, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface NavItemProps {
   href: string;
   icon: React.ReactNode;
   label: string;
-  active?: boolean;
 }
 
-const NavItem = ({ href, icon, label, active }: NavItemProps) => {
+const NavItem = ({ href, icon, label }: NavItemProps) => {
+  const location = useLocation();
+  const isActive = location.pathname === href;
+  
   return (
     <Link to={href}>
       <div
         className={cn(
           "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
-          active
+          isActive
             ? "bg-primary text-primary-foreground"
             : "hover:bg-muted text-muted-foreground hover:text-foreground"
         )}
@@ -29,7 +31,6 @@ const NavItem = ({ href, icon, label, active }: NavItemProps) => {
 };
 
 const NavBar = () => {
-  // We're adding active state to home since it's our current page
   return (
     <div className="h-screen border-r bg-card px-3 py-8">
       <div className="flex items-center gap-2 px-2 mb-8">
@@ -39,7 +40,7 @@ const NavBar = () => {
         <h1 className="text-xl font-bold">DeployFlow</h1>
       </div>
       <nav className="space-y-2">
-        <NavItem href="/" icon={<Home size={18} />} label="Dashboard" active />
+        <NavItem href="/" icon={<Home size={18} />} label="Dashboard" />
         <NavItem href="/pipelines" icon={<Activity size={18} />} label="Pipelines" />
         <NavItem href="/containers" icon={<Box size={18} />} label="Containers" />
         <NavItem href="/settings" icon={<Settings size={18} />} label="Settings" />
